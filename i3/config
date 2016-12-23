@@ -10,8 +10,8 @@ set $editor termite
 font pango:Hack 10
 
 # Gaps
-gaps inner 4
-gaps outer 4
+gaps inner 6
+gaps outer 2
 new_window pixel 1
 new_float pixel 1
 smart_gaps on
@@ -56,44 +56,41 @@ bindsym $mod+Shift+9 move container to workspace $workspace9
 bindsym $mod+Shift+0 move container to workspace $workspace10
 
 # ---------------------------------------------------------------------------------- #
-# Theme and bar setup
+# Theme
 
 # Red color scheme
-set $bg-color            #161616
-set $ws-focus		 #101010
-set $inactive-bg-color   #161616
-set $text-color          #f0544c
-set $inactive-text-color #535353
-set $urgent-bg-color 	 #f0544c
-set $urgent-text-color	 #000000
-set $focus-color	 #f0544c
-set $text-focus-color	 #000000
-set $nofocus-color	 #161616
+set $black		 #000000
+set $darker		 #161616
+set $dark		 #3f3f3f
+set $heavy-grey		 #8e8e8e
+set $medium-grey	 #3f3f3f
+set $light-grey		 #F8F8F8
+set $red		 #f0544c
 
 # Window colors
 #                       border             background		text			indicator
-client.focused          $focus-color	   $focus-color        	$text-focus-color	$bg-color
-client.unfocused        $inactive-bg-color $nofocus-color 	$inactive-text-color	$bg-color
-client.focused_inactive $inactive-bg-color $nofocus-color  	$inactive-text-color	$bg-color
-client.urgent 		$urgent-bg-color   $urgent-bg-color    	$urgent-text-color	$bg-color
+client.focused          $red		   $red			$darker			$darker
+client.unfocused        $dark		   $medium-grey 	$heavy-grey		$darker
+client.focused_inactive $dark		   $medium-grey  	$heavy-grey		$darker
+client.urgent 		$red		   $red			$darker			$darker
 
 hide_edge_borders both
 
+# Status
 bar {
-        id bottombar
-	position bottom
+	position top
 	workspace_buttons yes
 	status_command i3blocks
 	strip_workspace_numbers yes
 	font pango:Hack, FontAwesome 8
 	separator_symbol ""
 	colors {
-		background $bg-color
-	    	separator #757575
+		background $darker
+	    	separator $medium-grey
 		#                  border             background         text
-		focused_workspace  $ws-focus	      $ws-focus		 $text-color
-		inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
-		urgent_workspace   $urgent-bg-color   $urgent-bg-color   $urgent-text-color
+		focused_workspace  $darker	      $darker		 $red
+		inactive_workspace $darker	      $darker		 $heavy-grey
+		urgent_workspace   $red		      $red		 $darker
 		}
 }
 
@@ -119,6 +116,15 @@ for_window [title="^Steam Keyboard$"] 	  	  	   		 		floating enable
 
 # ---------------------------------------------------------------------------------- #
 # Keybindings
+
+# Scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the first scratchpad window
+bindsym $mod+minus scratchpad show
+
+# Show the sup-mail scratchpad window, if any.
+bindsym $mod+p [title="^Sup ::"] scratchpad show
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -206,8 +212,8 @@ bindsym $mod+F1 exec firefox
 bindsym $mod+F2 exec chromium
 # Brave
 bindsym $mod+F3 exec brave
-# Tor Browser
-bindsym $mod+F4 exec sh -c '"/home/sun/Tor/Browser/start-tor-browser" --detach || ([ !  -x "/home/sun/Tor/Browser/start-tor-browser" ] && "$(dirname "$*")"/Browser/start-tor-browser --detach)' dummy %k
+# Thunderbird
+bindsym $mod+F4 exec thunderbird
 # Emacs
 bindsym $mod+F5 exec emacs
 # Libreoffice Writer
@@ -218,20 +224,18 @@ bindsym $mod+F7 exec krita
 bindsym $mod+F8 exec kdenlive
 # Thunar
 bindsym $mod+F9 exec thunar
+# Tor Browser
+bindsym $mod+F12 exec sh -c '"/home/sun/Tor/Browser/start-tor-browser" --detach || ([ !  -x "/home/sun/Tor/Browser/start-tor-browser" ] && "$(dirname "$*")"/Browser/start-tor-browser --detach)' dummy %k
 # Terminal
 bindsym $mod+Return exec termite
-# Rofi - program launcher
-bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 320 -opacity "85" -bw 0 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "System San Francisco Display 18"
+# Rofi
+bindsym $mod+d exec rofi -show run -markup -lines 10 -width 600 -separator-style none -hide-scrollbar true 0 -bw 2 -font "Hack 12"
 
 # ---------------------------------------------------------------------------------- #
 # Startup
 
-# Gnome settings
-exec --no-startup-id gnome-settings-daemon
 # Load compton -- nice transitions
 exec compton
-# Load feh -- set the background
-exec_always feh --bg-scale /usr/share/backgrounds/Cranberry_bluemountain-logo.jpg
 # Turn off touchpad
 exec xinput set-prop 11 "Device Enabled" 0
 # Set keyboard repeat rate
@@ -242,6 +246,16 @@ exec xset s off
 exec xset -dpms
 # Swap ctrl with caps lock
 exec setxkbmap -option 'ctrl:swapcaps'
+# Turn off pc bell
+exec xset b off
+
+# Wallpaper
+#exec_always feh --bg-scale ~/Billeder/wallpapers/1roJs2C.jpg
+exec_always feh --bg-scale ~/Billeder/wallpapers/8WZ5WaP.jpg
+#exec_always feh --bg-scale ~/Billeder/wallpapers/j9azP9b.jpg
+#exec_always feh --bg-scale ~/Billeder/wallpapers/grey-wall.jpeg
+#exec_always feh --bg-scale ~/Billeder/wallpapers/grey-slate.png
+#exec_always feh --bg-scale ~/Billeder/wallpapers/red-wall.jpg
 
 # ---------------------------------------------------------------------------------- #
 # Modes
@@ -260,11 +274,12 @@ mode $sysmenu {
 }
 
 # Quickmenu
-set 	$qmenu	"quick: [s]creenshot"
+set 	$qmenu	"quick: [s]creenshot lx[a]ppearance"
 bindsym $mod+q	mode $qmenu
 
 mode $qmenu {
      bindsym s	      exec screengrab
+     bindsym a	      exec lxappearance
      bindsym Return   mode "default"
      bindsym Escape   mode "default"
 }
