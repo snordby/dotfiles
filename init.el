@@ -7,8 +7,8 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-(setq user-full-name "Sune Nordby")
-(setq user-mail-adress "nordby@protonmail.com")
+(setq user-full-name "Sune ")
+(setq user-mail-adress "@protonmail.com")
 (setq inhibit-startup-message t)
 (setq inhibit-startup-screen t)
 (setq inhibit-splash-screen t)
